@@ -53,7 +53,8 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && cd ./kms-core \
     && cmake . \
     && make -j4 \
-    && make install
+    && make install \
+    && cp /usr/local/lib/gstreamer-1.5/libkmscoreplugins.so /usr/lib/x86_64-linux-gnu/gstreamer-1.5/libkmscoreplugins.so
 
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-filters.git \
     && cd ./kms-filters \
@@ -65,7 +66,8 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && cd ./kms-elements \
     && cmake . \
     && make -j4 \
-    && make install
+    && make install \
+    && cp /usr/local/lib/gstreamer-1.5/libkmselementsplugins.so /usr/lib/x86_64-linux-gnu/gstreamer-1.5/libkmselementsplugins.so
 
 EXPOSE 8888
 
