@@ -65,3 +65,17 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && make -j4 \
     && make install
 
+EXPOSE 8888
+
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./healthchecker.sh /healthchecker.sh
+
+RUN chmod 777 /entrypoint.sh
+RUN chmod 777 /healthchecker.sh
+
+HEALTHCHECK --interval=5m --timeout=3s --retries=1 CMD /healthchecker.sh
+
+ENV GST_DEBUG=Kurento*:5
+
+ENTRYPOINT ["/entrypoint.sh"]
+
