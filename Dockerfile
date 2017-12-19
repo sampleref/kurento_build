@@ -31,13 +31,6 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && make -j4 \
     && make install
 
-RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-core.git \
-    && cd ./kms-core \
-    && cp /kmsagnosticcaps.h ./src/gst-plugins/commons/kmsagnosticcaps.h \
-    && cmake . \
-    && make -j4 \
-    && make install
-
 RUN apt-get update \
     && apt-get install -y gtk-doc-tools
 
@@ -56,8 +49,21 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && make install
 	
 RUN apt-get update \
-    && apt-get install -y pkg-config libboost-filesystem-dev libboost-test-dev libsoup2.4-dev libnice-dev \
+    && apt-get install -y pkg-config kms-core-6.0-dev kms-filters-6.0-dev libboost-filesystem-dev libboost-test-dev libsoup2.4-dev libnice-dev \
 	gstreamer1.5-nice uuid-dev valgrind openwebrtc-gst-plugins-dev ffmpeg libav-tools libssl-dev
+
+RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-core.git \
+    && cd ./kms-core \
+    && cp /kmsagnosticcaps.h ./src/gst-plugins/commons/kmsagnosticcaps.h \
+    && cmake . \
+    && make -j4 \
+    && make install
+
+RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-filters.git \
+    && cd ./kms-filters \
+    && cmake . \
+    && make -j4 \
+    && make install
 
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-elements.git \
     && cd ./kms-elements \
