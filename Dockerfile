@@ -6,9 +6,6 @@ RUN apt-get clean \
   && apt-get -y upgrade \
   && apt-get install -y ca-certificates wget curl git
 
-# Added KMS_AGNOSTIC_RTP_CAPS
-COPY ./kmsagnosticcaps.h /kmsagnosticcaps.h
-  
 # Following example at https://groups.google.com/forum/#!topic/kurento/Ofq5rfP3gAc
 
 RUN echo "deb http://ubuntu.kurento.org xenial-dev kms6" | tee /etc/apt/sources.list.d/kurento-dev.list \
@@ -54,7 +51,6 @@ RUN apt-get update \
 
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-core.git \
     && cd ./kms-core \
-    && cp /kmsagnosticcaps.h ./src/gst-plugins/commons/kmsagnosticcaps.h \
     && cmake . \
     && make -j4 \
     && make install
