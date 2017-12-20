@@ -81,5 +81,6 @@ HEALTHCHECK --interval=5m --timeout=3s --retries=1 CMD /healthchecker.sh
 
 ENV GST_DEBUG=Kurento*:5
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Commented below for using as base image to other apps
+#ENTRYPOINT ["/entrypoint.sh"]
 
