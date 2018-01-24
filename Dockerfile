@@ -49,6 +49,12 @@ RUN apt-get update \
     && apt-get install -y pkg-config kms-core-6.0-dev kms-filters-6.0-dev libboost-filesystem-dev libboost-test-dev libsoup2.4-dev libnice-dev \
 	gstreamer1.5-nice uuid-dev valgrind openwebrtc-gst-plugins-dev ffmpeg libav-tools libssl-dev
 
+RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-cmake-utils.git \
+    && cd ./kms-cmake-utils \
+    && cmake . \
+    && make -j4 \
+    && make install
+
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-core.git \
     && cd ./kms-core \
     && cmake . \
