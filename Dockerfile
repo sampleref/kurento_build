@@ -7,6 +7,7 @@ RUN apt-get clean \
   && apt-get install -y ca-certificates wget curl git
 
 # Following example at https://groups.google.com/forum/#!topic/kurento/Ofq5rfP3gAc
+COPY ./CMakeLists.txt /CMakeLists.txt
 
 RUN echo "deb http://ubuntu.kurento.org xenial-dev kms6" | tee /etc/apt/sources.list.d/kurento-dev.list \
     && wget -O - http://ubuntu.kurento.org/kurento.gpg.key | apt-key add - \
@@ -44,10 +45,16 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
     && ./configure \
     && make \
     && make install
-	
+
 RUN apt-get update \
     && apt-get install -y pkg-config kms-core-6.0-dev kms-filters-6.0-dev libboost-filesystem-dev libboost-test-dev libsoup2.4-dev libnice-dev \
 	gstreamer1.5-nice uuid-dev valgrind openwebrtc-gst-plugins-dev ffmpeg libav-tools libssl-dev
+
+RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-cmake-utils.git \
+    && cd ./kms-cmake-utils \
+    && cmake . \
+    && make -j4 \
+    && make install
 
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-core.git \
     && cd ./kms-core \
@@ -58,6 +65,7 @@ RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com
 
 RUN mkdir -p /kurento-setup && cd /kurento-setup && git clone https://github.com/Kurento/kms-filters.git \
     && cd ./kms-filters \
+	&& cp /CMakeLists.txt . \
     && cmake . \
     && make -j4 \
     && make install
@@ -81,5 +89,5 @@ HEALTHCHECK --interval=5m --timeout=3s --retries=1 CMD /healthchecker.sh
 
 ENV GST_DEBUG=Kurento*:5
 
+# Commented below for using as base image to other apps
 ENTRYPOINT ["/entrypoint.sh"]
-
